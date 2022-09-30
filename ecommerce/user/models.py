@@ -2,6 +2,8 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from ecommerce.db import Base
 
+from . import hashing
+
 
 class User(Base):
     __tablename__ = "users"
@@ -14,7 +16,7 @@ class User(Base):
     def __int__(self, name, email, password, *args, **kwargs):
         self.name = name
         self.email = email
-        self.password = self.password
+        self.password = hashing.get_password_hash(self.password)
 
     def check_password(self, password):
-        pass
+        return hashing.verify_password(self.password, password)
