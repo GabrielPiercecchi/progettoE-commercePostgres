@@ -7,12 +7,19 @@ from ecommerce.user.models import User
 from . models import Cart, CartItems
 
 
+async def add_items(cart_id, product_id, database: Session = Depends(db.get_db)):
+    cart_items = CartItems(cart_id=cart_id, product_id=product_id)
+    database.add(cart_items)
+    database.commit()
+    database.refresh(cart_items)
+
+
 async def add_to_cart(product_id, database: Session = Depends(db.get_db)):
     product_info = database.query(Product).get(product_id)
     if not product_id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Data Not Found !")
 
-    if product_info <= 0:
+    if product_info.quantity <= 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Items Out of Stock !")
 
     user_info = database.query(User).filter(User.email == "elon@tesla.com").first()
@@ -24,4 +31,7 @@ async def add_to_cart(product_id, database: Session = Depends(db.get_db)):
         database.add(new_cart)
         database.commit()
         database.refresh(new_cart)
-        await add_items(new_cart.id, database) #min 18:52
+        await add_items(new_cart.id, product_info.id, database)
+    else:
+        await add_items(cart_info.id, product_info.id, database)
+    return {"status": "Item Added to Cart"}
