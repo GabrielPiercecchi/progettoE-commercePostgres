@@ -4,7 +4,7 @@ from ecommerce.products import router as product_router
 
 
 app = FastAPI(title="EcommerceApp",
-              version="0.0.1")
+              version="0.0.1", redoc_url=None)
 
 app.include_router(user_router.router)
 app.include_router(product_router.router)
