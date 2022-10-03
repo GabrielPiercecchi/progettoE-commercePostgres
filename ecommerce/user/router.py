@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, status, Response, HTTPException
 from sqlalchemy.orm import Session
 from ecommerce import db
@@ -20,3 +22,8 @@ async def create_user_registration(request: schema.User, database: Session = Dep
 
     new_user = await services.new_user_register(request, database)
     return new_user
+
+
+@router.get('/', response_model=List[schema.DisplayUser])
+async def get_all_users(database: Session = Depends(db.get_db)):
+    return await services.all_users(database)

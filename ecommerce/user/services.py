@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import HTTPException, status
 from . import models
 from . import schema
@@ -10,3 +12,8 @@ async def new_user_register(request, database) -> models.User:
     database.commit()
     database.refresh(new_user)
     return new_user
+
+
+async def all_users(database) -> List[models.User]:
+    users = database.query(models.User).all()
+    return users
