@@ -103,3 +103,5 @@ wheel~=0.37.1
 Pygments~=2.13.0
 setuptools==65.4.1
 attrs~=22.1.0
+py~=1.11.0
+pytest~=7.1.3
