@@ -98,3 +98,8 @@ SQLAlchemy==1.4.41
 psycopg2==2.9.1
 psycopg2-binary==2.9.3
 email-validator==1.3.0
+pip~=22.2.2
+wheel~=0.37.1
+Pygments~=2.13.0
+setuptools==65.4.1
+attrs~=22.1.0
