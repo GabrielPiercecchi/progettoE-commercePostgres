@@ -88,7 +88,7 @@ async def get_all_items_id(user_id, database) -> ShowCart:
 #     return
 
 
-async def remove_cart_item_email(cart_item_id, database) -> None:
+async def remove_cart_id(cart_item_id, database) -> None:
     # user_info = database.query(User).filter(User.email == user_email).first()
     # cart_id = database.query(Cart).filter(User.id == user_info.id).first()
 

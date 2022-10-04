@@ -44,5 +44,5 @@ async def get_all_cart_items_by_id(user_id: int, database: Session = Depends(db.
 
 
 @router.delete('/{cart_item_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
-async def remove_cart_item_by_email(cart_item_id: int, database: Session = Depends(db.get_db)):
-    await services.remove_cart_item_email(cart_item_id, database)
+async def remove_cart_item_by_id(cart_item_id: int, database: Session = Depends(db.get_db)):
+    await services.remove_cart_id(cart_item_id, database)

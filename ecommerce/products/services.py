@@ -44,3 +44,8 @@ async def create_new_product(request, database) -> models.Product:
 async def get_all_products(database) -> List[models.Product]:
     products = database.query(models.Product).all()
     return products
+
+
+async def delete_products_by_id(product_id, database):
+    database.query(models.Product).filter(models.Product.id == product_id).delete()
+    database.commit()

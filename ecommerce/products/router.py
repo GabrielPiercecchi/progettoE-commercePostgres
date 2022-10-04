@@ -50,3 +50,8 @@ async def create_product(request: schema.Product, database: Session = Depends(db
 @router.get('/', response_model=List[schema.ProductListing])
 async def get_all_products(database: Session = Depends(db.get_db)):
     return await services.get_all_products(database)
+
+
+@router.delete('/{product_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
+async def delete_products_by_id(product_id: int, database: Session = Depends(db.get_db)):
+    return await services.delete_products_by_id(product_id, database)
