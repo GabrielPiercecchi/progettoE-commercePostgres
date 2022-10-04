@@ -7,7 +7,7 @@ from ecommerce import db
 from ecommerce.user import hashing
 from ecommerce.user.models import User
 
-router = APIRouter(tags=["auth"])
+router = APIRouter(tags=["Auth"])
 
 
 @router.post('/login')

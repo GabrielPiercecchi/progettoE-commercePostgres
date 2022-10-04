@@ -7,8 +7,8 @@ from ecommerce.orders.models import Order, OrderDetails
 from ecommerce.user.models import User
 
 
-async def initiate_order(database) -> Order:
-    user_info = database.query(User).filter(User.email == "elon@tesla.com").first()
+async def initiate_order(user_email, database) -> Order:
+    user_info = database.query(User).filter(User.email == user_email).first()
     cart = database.query(Cart).filter(Cart.user_id == user_info.id).first()
 
     cart_items_objects = database.query(CartItems).filter(Cart.id == cart.id)
@@ -45,7 +45,7 @@ async def initiate_order(database) -> Order:
     return new_order
 
 
-async def get_order_listing(database) -> List[Order]:
-    user_info = database.query(User).filter(User.email == "elon@tesla.com").first()
+async def get_order_listing(user_email, database) -> List[Order]:
+    user_info = database.query(User).filter(User.email == user_email).first()
     orders = database.query(Order).filter(Order.customer_id == user_info.id).all()
     return orders

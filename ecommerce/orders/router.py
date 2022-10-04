@@ -14,12 +14,12 @@ router = APIRouter(
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schema.ShowOrder)
-async def initiate_order_processing(database: Session = Depends(db.get_db)):
-    result = await services.initiate_order(database)
+async def initiate_order_processing(user_email, database: Session = Depends(db.get_db)):
+    result = await services.initiate_order(user_email, database)
     return result
 
 
 @router.get('/', status_code=status.HTTP_200_OK, response_model=List[schema.ShowOrder])
-async def orders_list(database: Session = Depends(db.get_db)):
-    result = await services.get_order_listing(database)
+async def orders_list(user_email: str, database: Session = Depends(db.get_db)):
+    result = await services.get_order_listing(user_email, database)
     return result
