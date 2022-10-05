@@ -5,7 +5,7 @@ FROM python:3.10-slim-buster
 RUN mkdir -p /home/app
 
 # create the app user
-RUN addgroup --system app && add user --system --group app
+RUN addgroup --system app && adduser --system --group app
 
 
 # Next, we will move forward and create our app directory where we will copy our code.

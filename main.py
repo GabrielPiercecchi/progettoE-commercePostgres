@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-from ecommerce.user import router as user_router
-from ecommerce.products import router as product_router
+
+from ecommerce.auth import router as auth_router
 from ecommerce.cart import router as cart_router
 from ecommerce.orders import router as order_router
-from ecommerce.auth import router as auth_router
-
+from ecommerce.products import router as product_router
+from ecommerce.user import router as user_router
 
 app = FastAPI(title="EcommerceApp",
               version="0.0.1", redoc_url=None)
