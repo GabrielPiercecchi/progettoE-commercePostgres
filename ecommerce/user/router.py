@@ -12,8 +12,7 @@ router = APIRouter(tags=['User'], prefix='/user')
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
-async def create_user_registration(request: schema.User, database: Session = Depends(db.get_db),
-                                   current_user: schema.User = Depends(get_current_user)):
+async def create_user_registration(request: schema.User, database: Session = Depends(db.get_db)):
     user = await validator.verify_email_exist(request.email, database)
 
     if user:
