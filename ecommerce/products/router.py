@@ -24,14 +24,12 @@ async def create_category(request: schema.Category, database: Session = Depends(
 
 
 @router.get('/category', response_model=List[schema.ListCategory])
-async def get_all_categories(database: Session = Depends(db.get_db),
-                             current_user: ecommerce.user.schema.User = Depends(get_current_user)):
+async def get_all_categories(database: Session = Depends(db.get_db)):
     return await services.get_all_categories(database)
 
 
 @router.get('/category/{category_id}', response_model=schema.ListCategory)
-async def category_by_id(category_id: int, database: Session = Depends(db.get_db),
-                         current_user: ecommerce.user.schema.User = Depends(get_current_user)):
+async def category_by_id(category_id: int, database: Session = Depends(db.get_db)):
     return await services.get_category_by_id(category_id, database)
 
 
@@ -55,8 +53,7 @@ async def create_product(request: schema.Product, database: Session = Depends(db
 
 
 @router.get('/', response_model=List[schema.ProductListing])
-async def get_all_products(database: Session = Depends(db.get_db),
-                           current_user: ecommerce.user.schema.User = Depends(get_current_user)):
+async def get_all_products(database: Session = Depends(db.get_db)):
     return await services.get_all_products(database)
 
 

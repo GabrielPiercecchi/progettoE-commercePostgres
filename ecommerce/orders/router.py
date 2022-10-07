@@ -23,7 +23,6 @@ async def initiate_order_processing(user_email, database: Session = Depends(db.g
 
 
 @router.get('/', status_code=status.HTTP_200_OK, response_model=List[schema.ShowOrder])
-async def orders_list(user_email: str, database: Session = Depends(db.get_db),
-                      current_user: ecommerce.user.schema.User = Depends(get_current_user)):
+async def orders_list(user_email: str, database: Session = Depends(db.get_db)):
     result = await services.get_order_listing(user_email, database)
     return result
