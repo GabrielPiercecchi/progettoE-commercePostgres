@@ -1,0 +1,234 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2022-10-12T10:11:50Z"
+  generation: 3
+  labels:
+    app: "ecommerce"
+  managedFields:
+  - apiVersion: "apps/v1"
+    fieldsType: "FieldsV1"
+    fieldsV1:
+      f:metadata:
+        f:labels:
+          ".": {}
+          f:app: {}
+      f:spec:
+        f:progressDeadlineSeconds: {}
+        f:replicas: {}
+        f:revisionHistoryLimit: {}
+        f:selector: {}
+        f:strategy:
+          f:rollingUpdate:
+            ".": {}
+            f:maxSurge: {}
+            f:maxUnavailable: {}
+          f:type: {}
+        f:template:
+          f:metadata:
+            f:labels:
+              ".": {}
+              f:app: {}
+          f:spec:
+            f:containers:
+              k:{"name":"sample-container"}:
+                ".": {}
+                f:envFrom: {}
+                f:image: {}
+                f:imagePullPolicy: {}
+                f:livenessProbe:
+                  ".": {}
+                  f:failureThreshold: {}
+                  f:httpGet:
+                    ".": {}
+                    f:path: {}
+                    f:port: {}
+                    f:scheme: {}
+                  f:initialDelaySeconds: {}
+                  f:periodSeconds: {}
+                  f:successThreshold: {}
+                  f:timeoutSeconds: {}
+                f:name: {}
+                f:ports:
+                  ".": {}
+                  k:{"containerPort":5000,"protocol":"TCP"}:
+                    ".": {}
+                    f:containerPort: {}
+                    f:name: {}
+                    f:protocol: {}
+                f:readinessProbe:
+                  ".": {}
+                  f:failureThreshold: {}
+                  f:httpGet:
+                    ".": {}
+                    f:path: {}
+                    f:port: {}
+                    f:scheme: {}
+                  f:initialDelaySeconds: {}
+                  f:periodSeconds: {}
+                  f:successThreshold: {}
+                  f:timeoutSeconds: {}
+                f:resources:
+                  ".": {}
+                  f:limits:
+                    ".": {}
+                    f:cpu: {}
+                    f:memory: {}
+                  f:requests:
+                    ".": {}
+                    f:cpu: {}
+                    f:memory: {}
+                f:terminationMessagePath: {}
+                f:terminationMessagePolicy: {}
+            f:dnsPolicy: {}
+            f:initContainers:
+              ".": {}
+              k:{"name":"init-postgres-service"}:
+                ".": {}
+                f:command: {}
+                f:image: {}
+                f:imagePullPolicy: {}
+                f:name: {}
+                f:resources: {}
+                f:terminationMessagePath: {}
+                f:terminationMessagePolicy: {}
+            f:restartPolicy: {}
+            f:schedulerName: {}
+            f:securityContext: {}
+            f:terminationGracePeriodSeconds: {}
+    manager: "okhttp"
+    operation: "Update"
+    time: "2022-10-12T10:11:50Z"
+  - apiVersion: "apps/v1"
+    fieldsType: "FieldsV1"
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          ".": {}
+          f:deployment.kubernetes.io/revision: {}
+      f:status:
+        f:conditions:
+          ".": {}
+          k:{"type":"Available"}:
+            ".": {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Progressing"}:
+            ".": {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+        f:observedGeneration: {}
+        f:replicas: {}
+        f:unavailableReplicas: {}
+        f:updatedReplicas: {}
+    manager: "kube-controller-manager"
+    operation: "Update"
+    subresource: "status"
+    time: "2022-10-12T10:12:36Z"
+  name: "ecommerce-deployment"
+  namespace: "fastapi-project"
+  resourceVersion: "7197"
+  uid: "3dbe8824-bd55-4fd3-9e40-25873d23313a"
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 8
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: "ecommerce-app"
+  strategy:
+    rollingUpdate:
+      maxSurge: "25%"
+      maxUnavailable: "25%"
+    type: "RollingUpdate"
+  template:
+    metadata:
+      labels:
+        app: "ecommerce-app"
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: "ecommerce-secret"
+        image: "mukulmantosh/ecommerce-fastapi:latest"
+        imagePullPolicy: "Always"
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: "/docs"
+            port: 5000
+            scheme: "HTTP"
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: "sample-container"
+        ports:
+        - containerPort: 5000
+          name: "fastapi"
+          protocol: "TCP"
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: "/docs"
+            port: 5000
+            scheme: "HTTP"
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+        terminationMessagePath: "/dev/termination-log"
+        terminationMessagePolicy: "File"
+      dnsPolicy: "ClusterFirst"
+      initContainers:
+      - command:
+        - "sh"
+        - "-c"
+        - "until pg_isready -h postgres-service.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local\
+          \ -p 5432; do echo waiting for database; sleep 2; done;"
+        image: "postgres:10.17"
+        imagePullPolicy: "IfNotPresent"
+        name: "init-postgres-service"
+        resources: {}
+        terminationMessagePath: "/dev/termination-log"
+        terminationMessagePolicy: "File"
+      restartPolicy: "Always"
+      schedulerName: "default-scheduler"
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  conditions:
+  - lastTransitionTime: "2022-10-12T10:11:50Z"
+    lastUpdateTime: "2022-10-12T10:11:50Z"
+    message: "Deployment does not have minimum availability."
+    reason: "MinimumReplicasUnavailable"
+    status: "False"
+    type: "Available"
+  - lastTransitionTime: "2022-10-12T10:11:50Z"
+    lastUpdateTime: "2022-10-12T10:11:50Z"
+    message: "ReplicaSet \"ecommerce-deployment-5c89677cdf\" is progressing."
+    reason: "ReplicaSetUpdated"
+    status: "True"
+    type: "Progressing"
+  observedGeneration: 3
+  replicas: 8
+  unavailableReplicas: 8
+  updatedReplicas: 8
