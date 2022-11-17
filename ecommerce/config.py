@@ -1,5 +1,5 @@
 import os
-import mysql.connector
+# import mysql.connector
 
 
 APP_ENV = os.getenv('APP_ENV', 'development')
