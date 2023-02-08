@@ -1,2 +1,2 @@
-# progettoBasi_di_Dati
-Repository per il progetto di Basi di dati costruito in Python
+# progettoE-commercePostgres
+Repository per il progetto di un e-commerce in Python usando Postgres
